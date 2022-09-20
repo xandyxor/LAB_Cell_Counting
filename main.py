@@ -7,14 +7,14 @@ from skimage.feature import blob_dog, blob_log, blob_doh
 img = cv2.imread('1.jpg')
 # plt.figure(figsize=(10,10))
 # plt.imshow(img)
-cv2.imshow('img',img)
-cv2.waitKey(0)
+# cv2.imshow('img',img)
+# cv2.waitKey(0)
 
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 # plt.figure(figsize=(10,10))
 # plt.imshow(gray, cmap = "gray")
-cv2.imshow('gray',gray)
-cv2.waitKey(0)
+# cv2.imshow('gray',gray)
+# cv2.waitKey(0)
 
 
 # th = cv2.adaptiveThreshold(gray,255, cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY_INV,3,5)
@@ -22,9 +22,32 @@ cv2.waitKey(0)
 # plt.figure(figsize=(10,10))
 # plt.imshow(th)
 
-thre,cell_bw=cv2.threshold(gray,80,255,cv2.THRESH_BINARY)#二值化
-cv2.imshow('THRESH',cell_bw)
-cv2.waitKey(0)
+cv2.imshow('threshold', gray)
+threshold = 100  # 初始化要調整亮度的數值
+cv2.imshow('threshold', gray)
+cell_bw = gray.copy()
+def threshold_fn(val):
+    global gray,threshold,cell_bw
+    threshold = val
+    print(threshold)
+ 
+    thre,cell_bw=cv2.threshold(gray,threshold,255,cv2.THRESH_BINARY)#二值化
+    cell_bw_three_channel = cv2.cvtColor(cell_bw, cv2.COLOR_GRAY2BGR)
+    img_3 = np.concatenate((img,cell_bw_three_channel), axis=1)
+    cv2.imshow('threshold', img_3)
+    # cv2.imshow('threshold', cell_bw)
+
+
+cv2.createTrackbar('threshold', 'threshold', 0, 255, threshold_fn)  # 加入亮度調整滑桿
+cv2.setTrackbarPos('threshold', 'threshold', 100)
+
+keycode = cv2.waitKey(0)
+cv2.destroyAllWindows()
+# thre,cell_bw=cv2.threshold(gray,80,255,cv2.THRESH_BINARY)#二值化
+# cv2.imshow('THRESH',cell_bw)
+# cv2.waitKey(0)
+
+
 
 
 blobs_log = blob_log(cell_bw,min_sigma = 4, max_sigma=5.5, num_sigma=10, threshold=.0001,overlap=0.7)
@@ -98,3 +121,35 @@ out[mask] = cv2.addWeighted(gray_three_channel, alpha, shapes, 1 - alpha, 0)[mas
 cv2.imshow('out',out)
 cv2.waitKey(0)
 print(blobs_log.shape [0])
+
+
+
+# img = cv2.imread('1.jpg')
+# cv2.imshow('oxxostudio', img)
+# contrast = 0    # 初始化要調整對比度的數值
+# brightness = 0  # 初始化要調整亮度的數值
+# cv2.imshow('oxxostudio', img)
+# # 定義調整亮度對比的函式
+# def adjust(i, c, b):
+#     output = i * (c/100 + 1) - c + b    # 轉換公式
+#     output = np.clip(output, 0, 255)
+#     output = np.uint8(output)
+#     cv2.imshow('oxxostudio', output)
+# # 定義調整亮度函式
+# def brightness_fn(val):
+#     global img, contrast, brightness
+#     brightness = val - 100
+#     adjust(img, contrast, brightness)
+# # 定義調整對比度函式
+# def contrast_fn(val):
+#     global img, contrast, brightness
+#     contrast = val - 100
+#     adjust(img, contrast, brightness)
+
+# cv2.createTrackbar('brightness', 'oxxostudio', 0, 200, brightness_fn)  # 加入亮度調整滑桿
+# cv2.setTrackbarPos('brightness', 'oxxostudio', 100)
+# cv2.createTrackbar('contrast', 'oxxostudio', 0, 200, contrast_fn)      # 加入對比度調整滑桿
+# cv2.setTrackbarPos('contrast', 'oxxostudio', 100)
+
+# keycode = cv2.waitKey(0)
+# cv2.destroyAllWindows()
