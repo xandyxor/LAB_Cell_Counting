@@ -110,7 +110,7 @@
      <rect>
       <x>270</x>
       <y>530</y>
-      <width>51</width>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
@@ -118,30 +118,49 @@
      <string>0x0</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="submitButton">
+   <widget class="QPushButton" name="btn_next">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>660</x>
       <y>10</y>
       <width>113</width>
       <height>32</height>
      </rect>
     </property>
     <property name="text">
-     <string>submit</string>
+     <string>Next</string>
     </property>
    </widget>
    <widget class="QSlider" name="horizontalSlider">
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>380</x>
       <y>530</y>
-      <width>431</width>
+      <width>381</width>
       <height>22</height>
      </rect>
     </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+    <property name="value">
+     <number>100</number>
+    </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_prt">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>10</y>
+      <width>113</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Previous</string>
     </property>
    </widget>
   </widget>

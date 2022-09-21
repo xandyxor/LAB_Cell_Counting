@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui_img_zoom_Layout3.ui'
+# Form implementation generated from reading ui file 'ui_img_zoom_Layout4.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -50,15 +50,18 @@ class Ui_MainWindow(object):
         self.lab_bar = QtWidgets.QLabel(self.centralwidget)
         self.lab_bar.setGeometry(QtCore.QRect(270, 530, 101, 21))
         self.lab_bar.setObjectName("lab_bar")
-        self.submitButton = QtWidgets.QPushButton(self.centralwidget)
-        self.submitButton.setGeometry(QtCore.QRect(590, 10, 113, 32))
-        self.submitButton.setObjectName("submitButton")
+        self.btn_next = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_next.setGeometry(QtCore.QRect(660, 10, 113, 32))
+        self.btn_next.setObjectName("btn_next")
         self.horizontalSlider = QtWidgets.QSlider(self.centralwidget)
         self.horizontalSlider.setGeometry(QtCore.QRect(380, 530, 381, 22))
         self.horizontalSlider.setMaximum(255)
         self.horizontalSlider.setProperty("value", 100)
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
+        self.btn_prt = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_prt.setGeometry(QtCore.QRect(550, 10, 113, 32))
+        self.btn_prt.setObjectName("btn_prt")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 24))
@@ -74,12 +77,13 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.fileButton.setText(_translate("MainWindow", "PushButton"))
+        self.fileButton.setText(_translate("MainWindow", "載入圖片"))
         self.btn_zoom_in.setText(_translate("MainWindow", "zoom in"))
         self.btn_zoom_out.setText(_translate("MainWindow", "zoom out"))
         self.label_img.setText(_translate("MainWindow", "img"))
         self.lab_bar.setText(_translate("MainWindow", "0x0"))
-        self.submitButton.setText(_translate("MainWindow", "submit"))
+        self.btn_next.setText(_translate("MainWindow", "Next"))
+        self.btn_prt.setText(_translate("MainWindow", "Previous"))
 
 
 if __name__ == "__main__":
