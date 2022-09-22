@@ -177,16 +177,14 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         self.cell_bw_three_channel = self.img.copy()
         thre,self.cell_bw=cv2.threshold(self.gray,threshold,255,cv2.THRESH_BINARY)#二值化
         self.cell_bw_three_channel = cv2.cvtColor(self.cell_bw, cv2.COLOR_GRAY2BGR)
-        # self.cell_bw_three_channel = cv2.cvtColor(self.cell_bw_three_channel, cv2.COLOR_BGR2BGRA)#透明層
-        # print(self.cell_bw_three_channel.shape)
-        # self.img_4 = self.img.copy()
-        # self.img_4 = cv2.cvtColor(self.img, cv2.COLOR_BGR2BGRA)#透明層
-        # print(self.img_4.shape)
 
-        # self.cell_bw_three_channel = cv2.cvtColor(self.cell_bw_three_channel, cv2.COLOR_BGR2BGRA)#透明層
-
-        # alpha = 0.8
-        # self.cell_bw_three_channel = cv2.addWeighted(self.cell_bw_three_channel, alpha, self.img_4, 1 - alpha, 0)
+        self.cell_bw_three_channel = cv2.cvtColor(self.cell_bw_three_channel, cv2.COLOR_BGR2BGRA)#透明層
+        print(self.cell_bw_three_channel.shape)
+        self.img_4 = cv2.cvtColor(self.img, cv2.COLOR_BGR2BGRA)#透明層
+        print(self.img_4.shape)
+        alpha = 0.6
+        self.cell_bw_three_channel = cv2.addWeighted(self.cell_bw_three_channel, alpha, self.img_4, 1 - alpha, 0)
+        self.cell_bw_three_channel = cv2.cvtColor(self.cell_bw_three_channel, cv2.COLOR_BGRA2BGR)#透明層
         
         height, width, channel = self.cell_bw_three_channel.shape
         bytesPerline = 3 * width
