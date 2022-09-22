@@ -15,6 +15,11 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setup_control()
+        self.scene = QtWidgets.QGraphicsScene(self.ui.centralwidget)
+        self.ui.graphicsView.setScene(self.scene)
+        # self.img = QPixmap('1.jpg')         # 加入圖片
+        # self.scene.addPixmap(self.img)                    # 將圖片加入 scene
+        # self.ui.graphicsView.setScene(self.scene)                  # 設定 QGraphicsView 的場景為 scene
         self.step = 0
         self.img_hight = 0
 
@@ -23,9 +28,11 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         self.img_path = '1.jpg'
         self.ui.btn_zoom_in.clicked.connect(self.func_zoom_in) 
         self.ui.btn_zoom_out.clicked.connect(self.func_zoom_out)
-        self.ui.scrollArea.setWidgetResizable(True)
-        self.ui.label_img.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.ui.label_img.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter) # 將圖片置中
+        # self.ui.scrollArea.setWidgetResizable(True)
+        # self.ui.label_img.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        # self.ui.label_img.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter) # 將圖片置中
+        # self.ui.graphicsView.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
+        # self.ui.graphicsView.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter) # 將圖片置中
         self.ui.btn_next.clicked.connect(self.btn_next_fn) 
         self.ui.btn_prt.clicked.connect(self.btn_prt_fn) 
         self.ui.horizontalSlider.valueChanged.connect(self.getslidervalue)
@@ -45,7 +52,9 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         # self.ui.label.setText(f"{self.ui.horizontalSlider.value()}")
         if self.step == 2:
             self.binarization()
-
+        # if self.step == 3:
+        #     self.binarization()
+        #     self.blob_img()
         # print(self.ui.horizontalSlider.value())
 
     def display_img(self):
@@ -57,8 +66,14 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         self.qpixmap = QPixmap.fromImage(self.qimg)
         self.qpixmap_height = self.qpixmap.height()
         self.img_hight = self.qpixmap.height()
-        self.ui.label_img.setPixmap(QPixmap.fromImage(self.qimg))
-
+        # self.ui.label_img.setPixmap(QPixmap.fromImage(self.qimg))
+        # self.img = QPixmap(self.img_path)         # 加入圖片
+        self.scene.clear()
+        self.scene.addPixmap(self.qpixmap)                    # 將圖片加入 scene
+        self.ui.graphicsView.setScene(self.scene)                  # 設定 QGraphicsView 的場景為 scene
+        # self.ui.graphicsView.centerOn(self.scene)
+        # self.ui.graphicsView.centerOn(self.ui.graphicsView.width()*0.5,self.ui.graphicsView.height()*0.5)
+        # print(self.ui.graphicsView.width()*0.5,self.ui.graphicsView.height()*0.5)
         self.gray = cv2.cvtColor(self.img,cv2.COLOR_BGR2GRAY)
         # print(self.gray.shape)
         self.gray_three_channel = cv2.cvtColor(self.gray, cv2.COLOR_GRAY2BGR)
@@ -70,13 +85,17 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         # self.ui.label_img.setPixmap(QPixmap.fromImage(self.qimg))
 
     def func_zoom_in(self):
-        self.img_hight -= 100
+        self.ui.graphicsView.scale(0.8,0.8)   # Increase zoom
+
+        # self.img_hight -= 100
         # self.qpixmap_height = self.img_hight
         # self.qpixmap_height -= 100
         self.update_img()
 
     def func_zoom_out(self):
-        self.img_hight += 100
+        self.ui.graphicsView.scale(1.2,1.2)   # Increase zoom
+
+        # self.img_hight += 100
         # self.qpixmap_height = self.img_hight
         # self.qpixmap_height += 100
         self.update_img()
@@ -90,7 +109,15 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         scaled_pixmap = self.qpixmap.scaledToHeight(self.qpixmap_height)
         # print(f"current img shape = ({scaled_pixmap.width()}, {scaled_pixmap.height()})")
         # self.ui.lab_bar.setText(f"({scaled_pixmap.width()} x {scaled_pixmap.height()})")
-        self.ui.label_img.setPixmap(scaled_pixmap)
+        # self.ui.label_img.setPixmap(scaled_pixmap)
+        # self.ui.graphicsView.setPixmap(scaled_pixmap)
+        self.scene.clear()
+        self.scene.addPixmap(scaled_pixmap)                    # 將圖片加入 scene
+        # self.ui.graphicsView.centerOn(self.ui.graphicsView.width()*0.5,self.ui.graphicsView.height()*0.5)
+        # self.ui.graphicsView.mapToScene(self.ui.graphicsView.viewport().rect().center()) 
+        self.ui.graphicsView.setScene(self.scene)                  # 設定 QGraphicsView 的場景為 scene
+
+        # print(self.ui.graphicsView.width()*0.5,self.ui.graphicsView.height()*0.5)
         self.ui.btn_prt.setText("Previous")
         self.ui.btn_next.setText("Next")
 
@@ -150,6 +177,17 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         self.cell_bw_three_channel = self.img.copy()
         thre,self.cell_bw=cv2.threshold(self.gray,threshold,255,cv2.THRESH_BINARY)#二值化
         self.cell_bw_three_channel = cv2.cvtColor(self.cell_bw, cv2.COLOR_GRAY2BGR)
+        # self.cell_bw_three_channel = cv2.cvtColor(self.cell_bw_three_channel, cv2.COLOR_BGR2BGRA)#透明層
+        # print(self.cell_bw_three_channel.shape)
+        # self.img_4 = self.img.copy()
+        # self.img_4 = cv2.cvtColor(self.img, cv2.COLOR_BGR2BGRA)#透明層
+        # print(self.img_4.shape)
+
+        # self.cell_bw_three_channel = cv2.cvtColor(self.cell_bw_three_channel, cv2.COLOR_BGR2BGRA)#透明層
+
+        # alpha = 0.8
+        # self.cell_bw_three_channel = cv2.addWeighted(self.cell_bw_three_channel, alpha, self.img_4, 1 - alpha, 0)
+        
         height, width, channel = self.cell_bw_three_channel.shape
         bytesPerline = 3 * width
         self.qimg = QImage(self.cell_bw_three_channel, width, height, bytesPerline, QImage.Format_RGB888).rgbSwapped()
