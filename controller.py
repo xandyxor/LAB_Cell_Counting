@@ -484,6 +484,9 @@ class MainWindow_controller(QtWidgets.QMainWindow):
         max_sigma = self.ui.doubleSpinBox_max.value()
         threshold = self.ui.doubleSpinBox_th.value()
         overlap = self.ui.doubleSpinBox_ol.value()
+        if min_sigma>max_sigma:
+            QMessageBox.about(self, "ERROR", "min大於max了")
+            return 0
 
         # self.blobs_log = blob_log(self.cell_bw,min_sigma = 4, max_sigma=5.5, num_sigma=10, threshold=.0001,overlap=0.7)
         self.blobs_log = blob_log(self.cell_bw,min_sigma = min_sigma, max_sigma=max_sigma, num_sigma=10, threshold=threshold,overlap=overlap)
